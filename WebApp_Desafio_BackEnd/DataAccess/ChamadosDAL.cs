@@ -186,5 +186,38 @@ namespace WebApp_Desafio_BackEnd.DataAccess
 
             return (regsAfetados > 0);
         }
+
+        public IEnumerable<string> PesquisarSolicitantes(string prefixo)
+        {
+            IList<string> solicitantes = new List<string>();
+
+            using (SQLiteConnection dbConnection = new SQLiteConnection(CONNECTION_STRING))
+            {
+                using (SQLiteCommand dbCommand = dbConnection.CreateCommand())
+                {
+                    // A busca vai no nome do solicitante
+                    dbCommand.CommandText =
+                        "SELECT DISTINCT Solicitante " +
+                        "FROM chamados " +
+                        "WHERE Solicitante LIKE @Prefixo";
+
+                    dbCommand.Parameters.AddWithValue("@Prefixo", prefixo + "%");
+
+                    dbConnection.Open();
+
+                    using (SQLiteDataReader dataReader = dbCommand.ExecuteReader())
+                    {
+                        while (dataReader.Read())
+                        {
+                            if (!dataReader.IsDBNull(0))
+                                solicitantes.Add(dataReader.GetString(0));
+                        }
+                    }
+                    dbConnection.Close();
+                }
+            }
+
+            return solicitantes;
+        }
     }
 }

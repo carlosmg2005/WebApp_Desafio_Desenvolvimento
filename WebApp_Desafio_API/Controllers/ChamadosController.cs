@@ -171,5 +171,29 @@ namespace WebApp_Desafio_API.Controllers
                 return StatusCode(500, ex.Message);
             }
         }
+
+        /// <summary>
+        /// Pesquisa de solicitantes
+        /// </summary>
+        /// <param name="prefixo">Prefixo do nome do solicitante</param>
+        /// <returns></returns>
+        [HttpGet]
+        [ProducesResponseType(typeof(IEnumerable<string>), StatusCodes.Status200OK)]
+        [ProducesResponseType(typeof(string), StatusCodes.Status400BadRequest)]
+        [ProducesResponseType(typeof(string), StatusCodes.Status500InternalServerError)]
+        [Route("PesquisarSolicitantes")]
+        public IActionResult PesquisarSolicitantes([FromQuery] string prefixo)
+        {
+            try
+            {
+                var solicitantes = this.bll.PesquisarSolicitantes(prefixo);
+
+                return Ok(solicitantes);
+            }
+            catch (Exception ex)
+            {
+                return StatusCode(500, ex.Message);
+            }
+        }
     }
 }

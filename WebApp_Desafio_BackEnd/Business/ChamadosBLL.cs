@@ -28,5 +28,11 @@ namespace WebApp_Desafio_BackEnd.Business
         {
             return dal.ExcluirChamado(idChamado);
         }
+
+        // Método para buscar solicitantes
+        public IEnumerable<string> PesquisarSolicitantes(string prefixo)
+        {
+            return dal.PesquisarSolicitantes(prefixo);
+        }
     }
 }
